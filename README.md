@@ -21,7 +21,7 @@ Kontrol Permainan berikut :
   - Backward ( Press S )
   - Right ( Press D )
 
-## Progres Projek
+## Progres Proyek
 
 Kegiatan | Status | Tanggal Selesai | Referensi | Preview
 :---: | :---: | :---: | :---: |  :---: 
