@@ -4,7 +4,7 @@
 
 Perang ikhlas adalah proyek game 2D role play game yang menerapkan tema keislaman baik berupa item item dari al quran dan musuh berupa berbagai macam jin
 
-### Spesifikasi Testing Perangkat Lama
+### Spesifikasi Testing
 
 - Sistem Operasi : MacOS Montereey version 12.6
 - Prosesor : 2,3 GHz Dual-Core Intel Core i5
