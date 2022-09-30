@@ -17,42 +17,45 @@ public class Player : NetworkBehaviour
 
     [field: SerializeField]
     [field: SyncVar(OnChange = nameof(OnChangePlayerReady))]
-    public bool IsReady { get; private set; }
+    public bool IsReady;
+
+    public int SWITCH=0;
 
     [field: SyncVar(OnChange = nameof(OnChangePlayerName))]
     public string playerName;
 
     public void OnChangePlayerReady(bool oldValue, bool newValue, bool isServer)
     {
-        if (!isServer)
-            playerNameText.text = playerName + "\nReady : " + IsReady;
+        playerNameText.text = playerName + "\nReady : " + IsReady;
     }
 
     public void OnChangePlayerName(string oldValue, string newValue, bool isServer)
     {
-        if (!isServer)
-            playerNameText.text = playerName + "\nReady : " + IsReady;
+         playerNameText.text = playerName + "\nReady : " + IsReady;
     }
 
     public override void OnStartClient()
     {
         base.OnStartClient();
 
-        GameObject playerCardPanel = GameObject.Find("Panel_Players");
-        if (!playerCardPanel)
+        if (playerNameText == null)
         {
-            Debug.LogError("ui lobby player for panel not found");
-        }
-        else
-        {
-            GameObject playerCard = Instantiate(lobbyPlayerCard, playerCardPanel.transform);
-            playerNameText = playerCard.GetComponentInChildren<Text>();
-            if (!playerNameText)
-                Debug.Log("playerNameText not found");
+            GameObject playerCardPanel = GameObject.Find("Panel_Players");
+            if (!playerCardPanel)
+            {
+                Debug.LogError("ui lobby player for panel not found");
+            }
+            else
+            {
+                GameObject playerCard = Instantiate(lobbyPlayerCard, playerCardPanel.transform);
+                playerNameText = playerCard.GetComponentInChildren<Text>();
+                if (!playerNameText)
+                    Debug.Log("playerNameText not found");
 
+            }
+            if (!IsOwner)
+                return;
         }
-        if (!IsOwner)
-            return;
         Instance = this;
         ChangePlayerName("Player: " + OwnerId);
     }
@@ -61,12 +64,41 @@ public class Player : NetworkBehaviour
     {
         base.OnStartServer();
         GamePlayManager.Instance.players.Add(this);
+        if (playerNameText == null)
+        {
+            GameObject playerCardPanel = GameObject.Find("Panel_Players");
+            if (!playerCardPanel)
+            {
+                Debug.LogError("ui lobby player for panel not found");
+            }
+            else
+            {
+                GameObject playerCard = Instantiate(lobbyPlayerCard, playerCardPanel.transform);
+                playerNameText = playerCard.GetComponentInChildren<Text>();
+                if (!playerNameText)
+                    Debug.Log("playerNameText not found");
+
+            }
+        }
+        Instance = this;
+        ChangePlayerName("Player: " + OwnerId);
     }
 
     [ServerRpc]
     public void ToggleReadyState()
     {
-        IsReady = !IsReady;
+        SWITCH++;
+        if (IsReady)
+        {
+            IsReady = false;
+            GameObject.Find("Textku").GetComponent<Text>().text = ("Hola" + SWITCH + " - " + Random.Range(-10.0f, 10.0f));
+        }
+        else
+        {
+            IsReady = true;
+            GameObject.Find("Textku").GetComponent<Text>().text = ("Holas" + SWITCH + " - " + Random.Range(-10.0f, 10.0f));
+        }
+
     }
 
     [ServerRpc]
@@ -81,7 +113,7 @@ public class Player : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame

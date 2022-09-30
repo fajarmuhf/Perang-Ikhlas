@@ -136,7 +136,7 @@ public class SceneConfig : MonoBehaviour
             }
         }
 
-
+        
         if (lobbySceneLoaded)
         {
             UnloadOfflineScene();
@@ -151,7 +151,6 @@ public class SceneConfig : MonoBehaviour
             
             if (_networkManager.IsServer)
             {
-
                 startGameButton.onClick.AddListener(() => { LoadGameScene(); });
                 GamePlayManager.Instance.StartGameButton = startGameButton.gameObject;
 
@@ -170,7 +169,7 @@ public class SceneConfig : MonoBehaviour
                     readyButton.gameObject.SetActive(false);
                 }
             }
-            if (_networkManager.IsClient)
+            else if (_networkManager.IsClient)
             {
                 readyButton.onClick.AddListener(() =>
                 {
